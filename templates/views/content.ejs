@@ -1,0 +1,117 @@
+<div class="content">
+	<%var d = data%>
+	<a href="/assets">List Assets</a>
+	<div id="auction">
+		<div class="item">
+			<h1>Car</h1>
+			<p><%=data.Car%></p>
+			<p id="owner"><%=data.Owner%></p>
+			<p id="price">$<%=data.Price%></p>
+			<div id="clock">
+				<span id="seconds">10</span>
+			</div>
+			<button class="glow-on-hover" id="start" onclick="start()">Start</button>
+		</div>
+
+		<div class="clients">
+			<div class="client 1">
+				<p>Name: Cynthia</p>
+				<div class="bid">
+					<p>Bid</p>
+					$<input type="text" id="Cynthia" disabled />
+				</div>
+				<button class="glow-on-hover" onclick="bid('Cynthia')">Enviar</button>
+			</div>
+			<div class="client 2">
+				<p>Name: Gerardo</p>
+				<div class="bid">
+					<p>Bid</p>
+					$<input type="text" id="Gerardo" disabled />
+				</div>
+				<button class="glow-on-hover" onclick="bid('Gerardo')">Enviar</button>
+			</div>
+			<div class="client 3">
+				<p>Name: Beto</p>
+				<div class="bid">
+					<p>Bid</p>
+					$<input type="text" id="Beto" disabled />
+				</div>
+				<button class="glow-on-hover" onclick="bid('Beto')">Enviar</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		timeLeft = 10
+		let elementP = ''
+		let elementO = ''
+		const data = {}
+		data.Car = '<%= d.Car %>'
+		data.ID = '<%= d.ID %>'
+		data.Owner = '<%= d.Owner %>'
+		data.Price = '<%= d.Price %>'
+		data.paramsId = '<%= d.paramsId %>'
+
+		function countdown() {
+			timeLeft--
+			document.getElementById('seconds').innerHTML = String(timeLeft)
+			if (timeLeft > 0) {
+				setTimeout(countdown, 1000)
+			} else {
+				alert(`
+        Car: ${data.Car}
+        Id: ${data.ID}
+        Owner: ${data.Owner}
+        Price: ${data.Price}
+        `)
+
+				const url = `/setAsset/${data.paramsId}?car=${data.Car}&owner=${data.Owner}&id=${data.ID}&price=${data.Price}`
+
+				const divContent = document.getElementById('auction')
+				divContent.innerHTML = `
+        <form class="set-transaction" action="${url}" method="POST">
+          <button type="submit" class="glow-on-hover">Set transaction</button>
+	      </form>
+        `
+			}
+		}
+
+		function restart() {
+			timeLeft = 10
+			document.getElementById('seconds').innerHTML = String(timeLeft)
+		}
+
+		function bid(id) {
+			const input = document.getElementById(id)
+			const val = input.value
+			elementP = document.getElementById('price')
+			const dataP = elementP.innerHTML
+
+			if (val > parseInt(dataP.replace('$', ''))) {
+				elementP.innerHTML = `$${val}`
+				data.Price = val
+
+				elementO = document.getElementById('owner')
+				elementO.innerHTML = id
+				data.Owner = id
+
+				input.value = ''
+
+				restart()
+			}
+		}
+
+		function start() {
+			setTimeout(countdown, 1000)
+			const cynthia = document.getElementById('Cynthia')
+			cynthia.disabled = false
+			const gerardo = document.getElementById('Gerardo')
+			gerardo.disabled = false
+			const beto = document.getElementById('Beto')
+			beto.disabled = false
+
+			const buttonS = document.getElementById('start')
+			buttonS.style.visibility = 'hidden'
+		}
+	</script>
+</div>

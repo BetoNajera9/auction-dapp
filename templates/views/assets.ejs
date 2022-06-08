@@ -1,0 +1,12 @@
+<%- include('header.ejs') %>
+<ul class="assets">
+	<% assets.forEach(function(asset, index) { %>
+	<li class="asset">
+		<h2 class="asset-car"><a href="/asset/<%=index%>"><%=asset.Car%></a></h2>
+		<p class="asset-id"><%=asset.ID%></p>
+		<p class="asset-owner"><%=asset.Owner%></p>
+		<p class="asset-price">$<%=asset.Price%></p>
+	</li>
+	<% })%>
+</ul>
+<%- include('footer.ejs') %>
