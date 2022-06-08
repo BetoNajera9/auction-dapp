@@ -16,6 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/assets', async (req, res) => {
 	await api.setConnection()
+	await api.initLedger(api.getContract())
 
 	const assets = await api.getAllAssets(api.getContract())
 
@@ -27,6 +28,7 @@ app.get('/assets', async (req, res) => {
 app.get('/asset/:id', async (req, res) => {
 	const id = parseInt(req.params.id)
 	await api.setConnection()
+	await api.initLedger()
 
 	const result = await api.getAllAssets(api.getContract())
 	console.log(result)
@@ -45,11 +47,6 @@ app.post('/setAsset/:id', async (req, res) => {
 
 	await api.setConnection()
 	const result = await api.getAllAssets(api.getContract())
-	console.log(
-		'🚀 ~ file: index.js ~ line 48 ~ app.post ~ result',
-		result.length
-	)
-	console.log('🚀 ~ file: index.js ~ line 41 ~ app.post ~ index', index)
 
 	index < result.length - 1 ? index++ : (index = 0)
 
@@ -59,9 +56,9 @@ app.post('/setAsset/:id', async (req, res) => {
 })
 
 app.get('*', (req, res) => {
-	res.redirect('/asset/0')
+	res.redirect('/assets')
 })
 
 app.listen(3000, () => {
-	console.log('server started on port 3000')
+	console.log('Server started on port 3000')
 })

@@ -11,6 +11,8 @@ class App {
 
 		this.utf8Decoder = new TextDecoder()
 		this.assetId = this.getAssetId()
+
+		this.initLedgerFlag = false
 	}
 
 	async setConnection() {
@@ -51,13 +53,16 @@ class App {
 	}
 
 	async initLedger(contract) {
-		console.log(
-			'\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger'
-		)
+		if (!this.initLedgerFlag) {
+			console.log(
+				'\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger'
+			)
 
-		await contract.submitTransaction('InitLedger')
+			await contract.submitTransaction('InitLedger')
 
-		console.log('*** Transaction committed successfully')
+			console.log('*** Transaction committed successfully')
+			this.initLedgerFlag = true
+		}
 	}
 
 	async getAllAssets(contract) {
