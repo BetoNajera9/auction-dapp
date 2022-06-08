@@ -7,7 +7,7 @@ const path = require('path')
 require('dotenv').config()
 
 // Path to crypto materials.
-const cryptoPath = process.env.VUE_APP_CRYPTO_PATH
+const cryptoPath = process.env.CRYPTO_PATH
 
 // Path to user private key directory.
 const keyDirectoryPath = path.resolve(
@@ -38,7 +38,7 @@ const tlsCertPath = path.resolve(
 )
 
 // Gateway peer endpoint.
-const peerEndpoint = process.env.VUE_APP_PEER_ENDPOINT || 'localhost:7051'
+const peerEndpoint = process.env.PEER_ENDPOINT || 'localhost:7051'
 
 async function newGrpcConnection() {
 	const tlsRootCert = await fs.readFile(tlsCertPath)
